@@ -291,7 +291,7 @@ fi
 #testing for wrong input
 echo -n "Test 12: wrong input"
 $EXECUTABLE valid_maze.txt < wronginput.txt > tmp
-if grep -q "Wrong input" tmp;
+if grep -q "Invalid input" tmp;
 then
     echo "   PASS"
 else
