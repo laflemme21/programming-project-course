@@ -19,13 +19,13 @@ typedef struct{
 } Player;
 
 // Function prototypes
-void load_maze(Maze *maze, const char *filename, int num_of_args);
-void display_maze(const Maze *maze, const Player *player);
-void move_player(const Maze *maze, Player *player, char direction);
-int is_at_exit(int x, int y, Maze *maze);
+void load_maze(Maze *maze,char *filename, int num_of_args);
+void display_maze(Maze *maze,Player *player);
+void move_player(Maze *maze, Player *player, char direction);
+int is_at_exit(Maze *maze, Player *player);
 
 // Function definitions
-void load_maze(Maze *maze, const char *filename, int num_of_args){
+void load_maze(Maze *maze,char *filename, int num_of_args){
     if(num_of_args==1){
         printf("No maze was given");
         exit(1);
@@ -73,7 +73,7 @@ void prepare_game(Maze *maze, Player *player){
     }
 }
 
-void move_player(const Maze *maze,Player *player, char direction)
+void move_player(Maze *maze,Player *player, char direction)
 {
     int next_row=-2;
     int next_column=-2;
@@ -118,7 +118,7 @@ void move_player(const Maze *maze,Player *player, char direction)
         exit(100);
     }
 }
-void display_maze(const Maze *maze,const Player *player)
+void display_maze(Maze *maze,Player *player)
 {
     for(int i=0;i<maze->total_rows;i++){
         for(int j=0;j<maze->total_columns;j++){
@@ -126,17 +126,21 @@ void display_maze(const Maze *maze,const Player *player)
                 printf("X");
             }
             else{
-                print("%c",maze->map[i][j]);
+                printf("%c",maze->map[i][j]);
             }
         }
         printf("\n");
     }
 }
 
-int is_at_exit(int x, int y, Maze *maze)
+int is_at_exit(Maze *maze, Player *player)
 {
-    // Check if the player is at the exit of the maze
-    // returns 0 if he's not at the exit
+    if(player->y==maze->end_row&&player->x==maze->end_column){
+        return 1;
+    }
+    else{
+        return 0;
+    }
 }
 
 int main(int argc, char **argv)
@@ -145,19 +149,18 @@ int main(int argc, char **argv)
     int y;
     Maze *maze;
     Player *player;
-    char direction;
+    char user_input;
     load_maze(maze, argv[1], argc);
     prepare_game(maze,player);
-    // runs until maze is solved
-    while (/*is_at_exit(x, y, maze) == 0*/0==1)
+    while (is_at_exit(maze, player))
     {
-        if (direction == 'm' || direction == 'M')
+        if (user_input == 'm' || user_input == 'M')
         {
             display_maze(maze, player);
         }
-        else if (direction == 'a' || direction == 'A' || direction == 's' || direction == 'S' || direction == 'd' || direction == 'D' || direction == 'W' || direction == 'w')
+        else if (user_input == 'a' || user_input == 'A' || user_input == 's' || user_input == 'S' || user_input == 'd' || user_input == 'D' || user_input == 'W' || user_input == 'w')
         {
-            move_player(x, y, direction);
+            move_player(maze,player, user_input);
         }
     }
 }
