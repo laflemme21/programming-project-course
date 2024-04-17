@@ -22,7 +22,7 @@ typedef struct{
 void load_maze(Maze *maze,char *filename, int num_of_args);
 void display_maze(Maze *maze,Player *player);
 void move_player(Maze *maze, Player *player, char direction);
-int is_at_exit(Maze *maze, Player *player);
+void is_at_exit(Maze *maze, Player *player, int *exit);
 
 // Function definitions
 void load_maze(Maze *maze,char *filename, int num_of_args){
@@ -35,15 +35,24 @@ void load_maze(Maze *maze,char *filename, int num_of_args){
         printf("could not open file");
         exit(100);
     }
+
+    //first char stored at [0][0]
     char char_from_file=getc(file);
     int row=0;
     int column=0;
 
+    //assigned to an unnatagnable value to know if it was already modified or not
     maze->end_column=-1;
     maze->end_row=-1;
     maze->start_column=-1;
     maze->start_row=-1;
 
+    //assigned to unnatagnable value to know if it was already modified or not
+    for(int i=0;i<100;i++){
+        for(int j=0;j<100;j++){
+            maze->map[i][j]='N';
+        }
+    }
     while(char_from_file!=EOF){
 
         if(row>99||column>99){
@@ -56,7 +65,7 @@ void load_maze(Maze *maze,char *filename, int num_of_args){
             column++;
             char_from_file=getc(file);
         }
-        //counts total num of rows and resets num of columns
+        //counts total num of rows and resets num of columns except if the newline is the last of the file and is empty
         else{
             char_from_file=getc(file);
             if(char_from_file!=EOF){
@@ -91,27 +100,42 @@ void load_maze(Maze *maze,char *filename, int num_of_args){
         }
     }
     fclose(file);
-    maze->total_columns=getline(0);
-    maze->total_rows=row;
+    maze->total_columns=column;
+    maze->total_rows=row+1;
 }
 
 void prepare_game(Maze *maze, Player *player){
+
+    if(maze->total_rows<5||maze->total_columns<5){
+        printf("Invalid maze, invalid maze size, the maze is too small");
+        exit(3);
+    }
     if(maze->end_column==-1||maze->start_column==-1){
         printf("Invalid maze, missing starting S or ending E position");
         exit(3);
     }
 
-    for(int i=0;i<maze->total_rows;i++){
-        printf("%d",i);
-        //checks if every line has the same length
-        if(sizeof(maze->map[i])!=maze->total_columns && 
-        //always true unless it's the last row of the maze, 
-        //in this case if the row is empty the maze is considered valid
-        ((i!=maze->total_rows-1) || sizeof(maze->map[i])!=0)){
+    int num_of_char_in_row;
+    for(int i=0;i<maze->total_rows+1;i++){
+        num_of_char_in_row=0;
+
+        //count num of chars in a row
+        while(maze->map[i][num_of_char_in_row]!='N' && num_of_char_in_row<100){
+            num_of_char_in_row++;
+        }
+
+        //first checks if every line has the same length
+        //and
+        //second always true unless it's the last row of the maze, 
+        //in this case only if the row is empty the maze is considered valid
+        if((num_of_char_in_row!=maze->total_columns) && (i!=maze->total_rows || num_of_char_in_row!=0)){
             printf("Invalid maze, invalid maze size, the maze is not a rectangle");
             exit(3);
         }
     }
+
+    player->y=maze->start_row;
+    player->x=maze->start_column;
 }
 
 void move_player(Maze *maze,Player *player, char direction)
@@ -120,16 +144,16 @@ void move_player(Maze *maze,Player *player, char direction)
     int next_column=-2;
 
     if(direction=='W'||direction=='w'){
-        next_column=player->y-1;
+        next_row=player->y-1;
     }
     else if(direction=='A'||direction=='a'){
-        next_row=player->x-1;
+        next_column=player->x-1;
     }
     else if(direction=='S'||direction=='s'){
-        next_column=player->y+1;
+        next_row=player->y+1;
     }
     else if(direction=='D'||direction=='d'){
-        next_row=player->x+1;
+        next_column=player->x+1;
     }
     else if(direction!='M'||direction!='m'){
         printf("Invalid input");
@@ -137,26 +161,23 @@ void move_player(Maze *maze,Player *player, char direction)
     }
 
     if(0<=next_row && next_row<=maze->total_rows){
-        if(maze->map[next_row][player->x]==' '){
+        if(maze->map[next_row][player->x]==' '||maze->map[next_row][player->x]=='S'||maze->map[next_row][player->x]=='E'){
             player->y=next_row;
         }
         else{
-            printf("You collided with a wall or border");
-            exit(100);
+            printf("You collided with a wall or border\n");
         }
     }
     else if(0<=next_column && next_column<=maze->total_columns){
-        if(maze->map[player->y][next_column]==' '){
+        if(maze->map[player->y][next_column]==' ' || maze->map[player->y][next_column]=='S' || maze->map[player->y][next_column]=='E'){
             player->x=next_column;
         }
         else{
-            printf("You collided with a wall or border");
-            exit(100);
+            printf("You collided with a wall or border\n");
         }
     }
-    else if(next_column!=-2 || next_row!=-2){
-        printf("You collided with a wall or border");
-        exit(100);
+    else if(next_column!=-2 && next_row!=-2){
+        printf("You collided with a wall or border\n");
     }
 }
 void display_maze(Maze *maze,Player *player)
@@ -172,36 +193,40 @@ void display_maze(Maze *maze,Player *player)
         }
         printf("\n");
     }
+    printf("\n");
 }
 
-int is_at_exit(Maze *maze, Player *player)
+void is_at_exit(Maze *maze, Player *player, int *exit)
 {
     if(player->y==maze->end_row&&player->x==maze->end_column){
-        return 1;
+        *exit=1;
     }
     else{
-        return 0;
+        *exit=0;
     }
 }
 
-int main(int argc, char **argv)
-{
-    int x;
-    int y;
+int main(int argc, char **argv){
     Maze maze;
     Player player;
-    char user_input='q';
+    char user_input[2];
+    int exit=0;
     load_maze(&maze, argv[1], argc);
     prepare_game(&maze,&player);
-    while (is_at_exit(&maze, &player))
-    {
-        if (user_input == 'm' || user_input == 'M')
+    while (exit!=1)
+    {   
+        scanf("%c",user_input);
+        if (user_input[0] == 'm' || user_input[0] == 'M')
         {
             display_maze(&maze, &player);
         }
-        else if (user_input == 'a' || user_input == 'A' || user_input == 's' || user_input == 'S' || user_input == 'd' || user_input == 'D' || user_input == 'W' || user_input == 'w')
+        else if (user_input[0] == 'a' || user_input[0] == 'A' || user_input[0] == 's' || user_input[0] == 'S' || user_input[0] == 'd' || user_input[0] == 'D' || user_input[0] == 'W' || user_input[0] == 'w')
         {
-            move_player(&maze, &player, user_input);
+            move_player(&maze, &player, user_input[0]);
         }
+        is_at_exit(&maze, &player, &exit);
     }
+    printf("You completed the maze!\n");
+    display_maze(&maze, &player);
+    return 0;
 }

@@ -1,1 +1,19 @@
-0Invalid maze, invalid maze size, the maze is not a rectangle
+#X######
+#   #  #
+#      #
+#      E
+########
+
+#X######
+#   #  #
+#      #
+#      E
+########
+
+You completed the maze!
+#S######
+#   #  #
+#      #
+#      X
+########
+

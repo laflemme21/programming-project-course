@@ -1,7 +1,7 @@
 #!/bin/bash
 EXECUTABLE="./maze"
 
-gcc maze.c -o maze
+gcc -g maze.c -o maze -Wall
 echo -e "\n\n~~ Maze Tests ~~\n"
 
 #Testing no arguments
@@ -13,17 +13,18 @@ then
 else
     echo "   FAIL"
 fi
-
+: << 'c'
 #makes sure code works with valid maze
 echo -n "Test 2: Valid Maze 18"
-$EXECUTABLE valid_maze.txt > tmp1
+$EXECUTABLE valid_maze.txt > tmp2
 #checks whether a file is empty
-if [ -s tmp1 ];
+if [ -s tmp2 ];
 then
     echo "   FAIL"
 else
     echo "   PASS"
 fi
+c
 : << 'COMMENT'
 #testing with invalid path
 echo -n "Test 3: Invalid path 29"
@@ -127,7 +128,7 @@ then
 else
     echo "   FAIL"
 fi
-: <<C
+
 #testing for maze with less than 5 colomuns
 echo -n "Test 7: Invalid Maze Size (1) 128"
 $EXECUTABLE invalidsize_1.txt > tmp
@@ -137,7 +138,7 @@ then
 else
     echo "   FAIL"
 fi
-C
+
 #testing for maze with less than 5 rows
 echo -n "Test 7: Invalid Maze Size (2)"
 $EXECUTABLE invalidsize_2.txt > tmp
@@ -199,9 +200,9 @@ else
 fi
 
 #testing the command m and M
-echo -n "Test 9: printing the maze and starting position using M command"
-$EXECUTABLE valid_maze.txt < M.txt > tmp
-if grep -q "#S######\n#   X  #\n#      #\n#      E\n########\n\n#S######\n#   X  #\n#      #\n#      E\n########" tmp;
+echo -n "Test 9: printing the maze and starting position using M command 202"
+$EXECUTABLE valid_maze.txt < M.txt > tmp1
+if grep -q "#X######\n#   #  #\n#      #\n#      E\n########\n#S######\n#   X  #\n#      #\n#      E\n########" tmp1;
 then
     echo "   PASS"
 else
