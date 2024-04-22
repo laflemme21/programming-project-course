@@ -1,0 +1,22 @@
+
+#X######
+#   #  #
+#      #
+#      E
+########
+
+invalid inputinvalid input
+#S######
+#X  #  #
+#      #
+#      E
+########
+
+invalid inputinvalid inputinvalid inputinvalid inputinvalid inputinvalid inputinvalid inputinvalid inputYou completed the maze!
+
+#S######
+#   #  #
+#      #
+#      X
+########
+
