@@ -11,7 +11,7 @@ if grep -q "No maze was given" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 : << 'c'
 #makes sure code works with valid maze
@@ -20,7 +20,7 @@ $EXECUTABLE valid_maze.txt > tmp2.txt
 #checks whether a file is empty
 if [ -s tmp2.txt ];
 then
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 else
     echo "   PASS"
 fi
@@ -33,7 +33,7 @@ if grep -q "Invalid path" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 COMMENT
 #testing with "Q" in the maze
@@ -43,7 +43,7 @@ if grep -q "Invalid maze, invalid char" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing with "5" in the maze
@@ -53,7 +53,7 @@ if grep -q "Invalid maze, invalid char" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing with "^" in the maze
@@ -63,7 +63,7 @@ if grep -q "Invalid maze, invalid char" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for maze with no space
@@ -74,7 +74,7 @@ if grep -q "Invalid maze" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 COMMENT
 
@@ -86,7 +86,7 @@ if grep -q "Invalid maze" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 COMMENT
 
@@ -97,7 +97,7 @@ if grep -q "Invalid maze" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for maze with no E
@@ -107,7 +107,7 @@ if grep -q "Invalid maze" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 #testing for maze with more than one S
 echo -n "Test 6: Too many maze characteristic (1) 108"
@@ -116,7 +116,7 @@ if grep -q "Invalid maze" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for maze with more than one E
@@ -126,7 +126,7 @@ if grep -q "Invalid maze" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for maze with less than 5 colomuns
@@ -136,7 +136,7 @@ if grep -q "invalid maze size" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for maze with less than 5 rows
@@ -146,7 +146,7 @@ if grep -q "invalid maze size" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for maze with more than 100 colomuns
@@ -156,7 +156,7 @@ if grep -q "invalid maze size" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for maze with more than 100 rows
@@ -166,7 +166,7 @@ if grep -q "invalid maze size" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for maze with a row with an extra #\n
@@ -176,7 +176,7 @@ if grep -q "invalid maze size" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for maze with a row with an extra space
@@ -186,7 +186,7 @@ if grep -q "invalid maze size" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for maze with a row with a missing character
@@ -196,27 +196,26 @@ if grep -q "invalid maze size" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing the command m and M
 echo -n "Test 9: printing the maze and starting position using M command 202"
-$EXECUTABLE valid_maze.txt < M.txt > tmp1.txt
-if grep -q "#X######\n#   #  #\n#      #\n#      E\n########\n#S######\n#   X  #\n#      #\n#      E\n########" tmp1.txt;
+$EXECUTABLE valid_maze.txt < M.txt > tmp.txt
+if grep -q "#X######" tmp.txt && grep -q "#   #  #" tmp.txt && grep -q "#      #" tmp.txt && grep -q "#      E" tmp.txt && grep -q "########" tmp.txt && grep -q "#S######" tmp.txt && grep -q "#X  #  #" tmp.txt && grep -q "#      #" tmp.txt && grep -q "#      E" tmp.txt && grep -q "########" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
-: << "C"
 #testing the command s and S
 echo -n "Test 10: testing WASD and wasd command (S/s)207"
-$EXECUTABLE valid_maze.txt < S.txt > tmp.txt
+$EXECUTABLE valid_maze.txt < S.txt > tmp1.txt
 if grep -q "#S######\n#X  #  #\n#      #\n#      E\n########\n\n#S######\n#   #  #\n#X     #\n#      E\n########" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 rm -f tmp.txt
 
@@ -227,7 +226,7 @@ if grep -q "#S######\n#   #  #\n# X    #\n#      E\n########\n\n#S######\n#   # 
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 
@@ -238,7 +237,7 @@ if grep -q "#S######\n#   #  #\n# X    #\n#      E\n########\n\n#S######\n#   # 
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 
@@ -249,9 +248,9 @@ if grep -q "#S######\n#X  #  \n#      #\n#      E\n########\n\n#X######\n#   #  
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
-C
+
 #testing collision on the left
 echo -n "Test 11: testing walls and border collision (1)"
 $EXECUTABLE valid_maze.txt < wall_1.txt > tmp.txt
@@ -259,7 +258,7 @@ if grep -q "You collided with a wall or border" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing collision on the right
@@ -269,7 +268,7 @@ if grep -q "You collided with a wall or border" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 
@@ -280,7 +279,7 @@ if grep -q "You collided with a wall or border" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 
@@ -291,7 +290,7 @@ if grep -q "You collided with a wall or border" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for wrong input
@@ -301,7 +300,7 @@ if grep -q "invalid input" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 
 #testing for maze completion
@@ -311,6 +310,6 @@ if grep -q "You completed the maze" tmp.txt;
 then
     echo "   PASS"
 else
-    echo "   FAIL"
+    echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
 

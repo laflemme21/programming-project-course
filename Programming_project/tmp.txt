@@ -1,4 +1,18 @@
-invalid inputinvalid inputinvalid inputinvalid inputinvalid inputinvalid inputinvalid inputinvalid inputYou completed the maze!
+
+#X######
+#   #  #
+#      #
+#      E
+########
+
+
+#S######
+#X  #  #
+#      #
+#      E
+########
+
+You completed the maze!
 
 #S######
 #   #  #

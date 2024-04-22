@@ -30,7 +30,7 @@ void setup_maze_struct(Maze *maze){
     //assigned to unnatagnable value to know if it was already modified or not
     for(int i=0;i<100;i++){
         for(int j=0;j<100;j++){
-            maze->map[i][j]='N';
+            maze->map[i][j]='\0';
         }
     }
 }
@@ -59,7 +59,7 @@ void check_map(Maze *maze){
                 maze->end_row=row;
             }
             //checks for invalid chars
-            else if(maze->map[row][column]!=' ' && maze->map[row][column]!='#' && maze->map[row][column]!='\n' && maze->map[row][column]!=EOF){
+            else if(maze->map[row][column]!=' ' && maze->map[row][column]!='#' && maze->map[row][column]!='\n' && maze->map[row][column]!='\0'){
                 
                 printf("Invalid maze, invalid character %c found",maze->map[row][column]);
                 exit(3);
@@ -132,7 +132,7 @@ void prepare_game(Maze *maze, Player *player){
         num_of_char_in_row=0;
 
         //count num of chars in a row
-        while(maze->map[i][num_of_char_in_row]!='N' && num_of_char_in_row<100){
+        while(maze->map[i][num_of_char_in_row]!='\0' && num_of_char_in_row<100){
             num_of_char_in_row++;
         }
 
