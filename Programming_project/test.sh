@@ -1,7 +1,8 @@
 #!/bin/bash
-EXECUTABLE="./maze"
-
+EXECUTABLE="./..\maze"
+cd ..
 gcc -g maze.c -o maze -Wall
+cd Programming_project
 echo -e "\n\n~~ Maze Tests ~~\n"
 
 #Testing no arguments

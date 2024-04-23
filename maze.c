@@ -1,8 +1,10 @@
-#include "maze.h"
-#include "Player_struct.h"
+#include "maze_functions.h"
+#include "maze_structs.h"
 
-int main(int argc, char **argv){
-    if(argc!=2){
+int main(int argc, char **argv)
+{
+    if (argc != 2)
+    {
         printf("No maze was given");
         exit(1);
     }
@@ -10,16 +12,17 @@ int main(int argc, char **argv){
     setup_maze_struct(&maze);
     char user_input[2];
 
-    store_map(&maze,argv[1]);
-        
+    store_map(&maze, argv[1]);
+
     char_check_map(&maze);
     size_check_map(&maze);
 
     Player player;
-    setup_player(&maze,&player);
+    setup_player(&maze, &player);
 
-    while (1){   
-        scanf("%c",&user_input[0]);
+    while (1)
+    {
+        scanf("%c", &user_input[0]);
         if (user_input[0] == 'm' || user_input[0] == 'M')
         {
             display_maze(&maze, &player);
@@ -28,11 +31,13 @@ int main(int argc, char **argv){
         {
             move_player(&maze, &player, user_input[0]);
         }
-        else if(user_input[0]!='\n'){
+        else if (user_input[0] != '\n')
+        {
             printf("invalid input\n");
         }
 
-        if(player.y==maze.end_row&&player.x==maze.end_column){
+        if (player.y == maze.end_row && player.x == maze.end_column)
+        {
             printf("You completed the maze!\n");
             display_maze(&maze, &player);
             return 0;
