@@ -1,4 +1,5 @@
 #include "maze.h"
+#include "Player_struct.h"
 
 int main(int argc, char **argv){
     if(argc!=2){
@@ -6,14 +7,19 @@ int main(int argc, char **argv){
         exit(1);
     }
     Maze maze;
-    Player player;
+    setup_maze_struct(&maze);
     char user_input[2];
-    int exit=0;
-    load_maze(&maze, argv[1]);
-    prepare_game(&maze,&player);
-    while (exit!=1)
-    {   
-        scanf("%c",user_input);
+
+    store_map(&maze,argv[1]);
+        
+    char_check_map(&maze);
+    size_check_map(&maze);
+
+    Player player;
+    setup_player(&maze,&player);
+
+    while (1){   
+        scanf("%c",&user_input[0]);
         if (user_input[0] == 'm' || user_input[0] == 'M')
         {
             display_maze(&maze, &player);
@@ -22,18 +28,14 @@ int main(int argc, char **argv){
         {
             move_player(&maze, &player, user_input[0]);
         }
-        else{
+        else if(user_input[0]!='\n'){
             printf("invalid input\n");
         }
 
         if(player.y==maze.end_row&&player.x==maze.end_column){
-            exit=1;
-        }
-        else{
-            exit=0;
+            printf("You completed the maze!\n");
+            display_maze(&maze, &player);
+            return 0;
         }
     }
-    printf("You completed the maze!\n");
-    display_maze(&maze, &player);
-    return 0;
 }

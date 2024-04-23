@@ -13,7 +13,7 @@ then
 else
     echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
-: << 'c'
+: << c
 #makes sure code works with valid maze
 echo -n "Test 2: Valid Maze 18"
 $EXECUTABLE valid_maze.txt > tmp2.txt
@@ -25,17 +25,17 @@ else
     echo "   PASS"
 fi
 c
-: << 'COMMENT'
+
 #testing with invalid path
 echo -n "Test 3: Invalid path 29"
 $EXECUTABLE unexistantpath.txt > tmp.txt
-if grep -q "Invalid path" tmp.txt;
+if grep -q "could not open file" tmp.txt;
 then
     echo "   PASS"
 else
     echo "   FAILLLLLLLLLLLLLLLLLLLLLLLL"
 fi
-COMMENT
+
 #testing with "Q" in the maze
 echo -n "Test 4: Invalid character in maze (1) 39"
 $EXECUTABLE invalidchar_1.txt > tmp.txt
@@ -210,8 +210,8 @@ else
 fi
 #testing the command s and S
 echo -n "Test 10: testing WASD and wasd command (S/s)207"
-$EXECUTABLE valid_maze.txt < S.txt > tmp1.txt
-if grep -q "#S######\n#X  #  #\n#      #\n#      E\n########\n\n#S######\n#   #  #\n#X     #\n#      E\n########" tmp.txt;
+$EXECUTABLE valid_maze.txt < S.txt > tmp.txt
+if grep -q "#S######" tmp.txt && grep -q "#X  #  #" tmp.txt && grep -q "#      #" tmp.txt && grep -q "#      E" tmp.txt && grep -q "########" tmp.txt && grep -q "#S######" tmp.txt && grep -q "#   #  #" tmp.txt && grep -q "#X     #" tmp.txt && grep -q "#      E" tmp.txt && grep -q "########" tmp.txt;
 then
     echo "   PASS"
 else
@@ -222,7 +222,7 @@ rm -f tmp.txt
 #testing the command d and D
 echo -n "Test 10: testing WASD and wasd command (D/d)218"
 $EXECUTABLE valid_maze.txt < D.txt > tmp.txt
-if grep -q "#S######\n#   #  #\n# X    #\n#      E\n########\n\n#S######\n#   #  #\n#  X   #\n#      E\n########" tmp.txt;
+if grep -q "#S######" tmp.txt && grep -q "#   #  #" tmp.txt && grep -q "# X    #" tmp.txt && grep -q "#      E" tmp.txt && grep -q "########" tmp.txt && grep -q "#S######" tmp.txt && grep -q "#   #  #" tmp.txt && grep -q "#  X   #" tmp.txt && grep -q "#      E" tmp.txt && grep -q "########" tmp.txt;
 then
     echo "   PASS"
 else
@@ -233,7 +233,7 @@ fi
 #testing the command a and A
 echo -n "Test 10: testing WASD and wasd command (A/a)"
 $EXECUTABLE valid_maze.txt < A.txt > tmp.txt
-if grep -q "#S######\n#   #  #\n# X    #\n#      E\n########\n\n#S######\n#   #  #\n#X     #\n#      E\n########" tmp.txt;
+if grep -q "#S######" tmp.txt && grep -q "#   #  #" tmp.txt && grep -q "# X    #" tmp.txt && grep -q "#      E" tmp.txt && grep -q "########" tmp.txt && grep -q "#S######" tmp.txt && grep -q "#   #  #" tmp.txt && grep -q "#X     #" tmp.txt && grep -q "#      E" tmp.txt && grep -q "########" tmp.txt;
 then
     echo "   PASS"
 else
@@ -244,7 +244,7 @@ fi
 #testing the command w and W
 echo -n "Test 10: testing WASD and wasd command (W/w)240"
 $EXECUTABLE valid_maze.txt < W.txt > tmp.txt
-if grep -q "#S######\n#X  #  \n#      #\n#      E\n########\n\n#X######\n#   #  #\n#      #\n#      E\n########" tmp.txt;
+if grep -q "#S######" tmp.txt && grep -q "#X  #  #" tmp.txt && grep -q "#      #" tmp.txt && grep -q "#      E" tmp.txt && grep -q "########" tmp.txt && grep -q "#X######" tmp.txt && grep -q "#   #  #" tmp.txt && grep -q "#      #" tmp.txt && grep -q "#      E" tmp.txt && grep -q "########" tmp.txt;
 then
     echo "   PASS"
 else
