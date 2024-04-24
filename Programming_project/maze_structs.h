@@ -1,4 +1,5 @@
 #ifndef MAZE_STRUCTS_H
+#define MAZE_STRUCTS_H
 /**
  * @file maze_structs.h
  *
@@ -13,7 +14,7 @@
  */
 typedef struct
 {
-    char map[100][100];
+    char **map;
 
     int total_rows;
     int total_columns;

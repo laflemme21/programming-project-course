@@ -1,8 +1,6 @@
 #!/bin/bash
-EXECUTABLE="./..\maze"
-cd ..
+EXECUTABLE="./maze"
 gcc -g maze.c -o maze -Wall
-cd Programming_project
 echo -e "\n\n~~ Maze Tests ~~\n"
 
 #Testing no arguments
@@ -113,7 +111,7 @@ fi
 #testing for maze with more than one S
 echo -n "Test 6: Too many maze characteristic (1) 108"
 $EXECUTABLE multiplechar_1.txt > tmp.txt
-if grep -q "Invalid maze" tmp.txt;
+if grep -q "contains more than one starting position S" tmp.txt;
 then
     echo "   PASS"
 else
@@ -122,8 +120,8 @@ fi
 
 #testing for maze with more than one E
 echo -n "Test 6: Too many maze characteristic (2)"
-$EXECUTABLE multiplechar_2.txt > tmp.txt
-if grep -q "Invalid maze" tmp.txt;
+$EXECUTABLE multiplechar_2.txt > tmp1.txt
+if grep -q "contains more than one ending position E" tmp1.txt;
 then
     echo "   PASS"
 else

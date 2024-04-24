@@ -1,4 +1,5 @@
 #ifndef MAZE_FUNCTIONS_H
+#define MAZE_FUNCTIONS_H
 #include "maze_structs.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,15 +23,8 @@ void setup_maze_struct(Maze *maze)
     maze->end_row = -1;
     maze->start_column = -1;
     maze->start_row = -1;
-
-    // assigned to null value to know if it was already modified or not
-    for (int i = 0; i < 100; i++)
-    {
-        for (int j = 0; j < 100; j++)
-        {
-            maze->map[i][j] = '\0';
-        }
-    }
+    maze->total_columns = 0;
+    maze->total_rows = 0;
 }
 
 /**
@@ -53,42 +47,71 @@ void setup_player(Maze *maze, Player *player)
  */
 void store_map(Maze *maze, char *filename)
 {
-
     FILE *file = fopen(filename, "r");
     if (file == NULL)
     {
         printf("could not open file");
         exit(2);
     }
-    
+
     // first char stored at [row=0][column=0]
     char char_from_file = getc(file);
     int row = 0;
     int column = 0;
 
-while(char_from_file!=EOF){
-    if(char_from_file!='\n'){
-        column++;
+    //measures and records the dimensions of the maze
+    while (char_from_file != EOF)
+    {
+        if (char_from_file != '\n')
+        {
+            char_from_file = getc(file);
+            column++;
+        }
+        else
+        {
+            if (maze->total_columns < column)
+            {
+                maze->total_columns = column;
+            }
+            char_from_file = getc(file);
+            if (char_from_file != EOF)
+            {
+                row++;
+                if (maze->total_rows < row)
+                {
+                    maze->total_rows = row;
+                }
+                column = 0;
+            }
+        }
     }
-    else{
-        if(maze->total_columns < column){
-            maze->total_columns = column;
-        }
-        row++;
-        if(maze->total_rows < row){
-            maze->total_rows = row;
-        }
-        column=0;
+    maze->total_rows++;
+
+    //allocates memory to the 2d array depending on the size of the maze
+    maze->map = malloc((maze->total_rows) * sizeof(char *));
+    for (int row = 0; row < maze->total_rows; row++)
+    {
+        maze->map[row] = malloc(maze->total_columns * sizeof(char));
     }
 
-}
-maze->total_rows++;
-row=0;
-column=0;
+    // assigns to null value to know if it was already modified or not
+    for (int row = 0; row < maze->total_rows; row++)
+    {
+        for (int column = 0; column < maze->total_columns; column++)
+        {
+            maze->map[row][column] = '\0';
+        }
+    }
+
+    //restarts to read the file from the beginning
+    fseek(file, 0, SEEK_SET);
+    char_from_file = getc(file);
+    row = 0;
+    column = 0;
+
     // loops till end of file
     while (char_from_file != EOF)
     {
-
         if (row > 99 || column > 99)
         {
             printf("Invalid maze, invalid maze size, the maze is too big");
@@ -169,7 +192,7 @@ void char_check_map(Maze *maze)
  */
 void size_check_map(Maze *maze)
 {
-
+    //checks if the maze is to small
     if (maze->total_rows < 5 || maze->total_columns < 5)
     {
         printf("Invalid maze, invalid maze size, the maze is too small");
@@ -184,21 +207,19 @@ void size_check_map(Maze *maze)
     }
 
     int num_of_char_in_row;
-    for (int row = 0; row < maze->total_rows + 1; row++)
+    for (int row = 0; row < maze->total_rows; row++)
     {
         num_of_char_in_row = 0;
-
         // count num of chars in a row
-        while (maze->map[row][num_of_char_in_row] != '\0' && num_of_char_in_row < 100)
+        while (num_of_char_in_row < maze->total_columns && maze->map[row][num_of_char_in_row] != '\0')
         {
             num_of_char_in_row++;
         }
-
         // first checks if every line has the same length
         // and
         // second always true unless it's the last row of the maze,
         // in this case only if the row is empty the maze is considered valid
-        if ((num_of_char_in_row != maze->total_columns) && (row != maze->total_rows || num_of_char_in_row != 0))
+        if ((num_of_char_in_row != maze->total_columns) && (row != maze->total_rows - 1 || num_of_char_in_row != 0))
         {
             printf("Invalid maze, invalid maze size, the maze is not a rectangle");
             exit(3);
@@ -266,8 +287,8 @@ void move_player(Maze *maze, Player *player, char direction)
 
     // checks if player is not crossing maze boundaries
     if (0 <= next_row && next_row <= maze->total_rows)
-    {   
-        //checks if player is bumping in a wall
+    {
+        // checks if player is bumping in a wall
         if (maze->map[next_row][player->x] == ' ' || maze->map[next_row][player->x] == 'S' || maze->map[next_row][player->x] == 'E')
         {
             player->y = next_row;
@@ -280,7 +301,7 @@ void move_player(Maze *maze, Player *player, char direction)
     // checks if player is not crossing maze boundaries
     else if (0 <= next_column && next_column <= maze->total_columns)
     {
-        //checks if player is bumping in a wall
+        // checks if player is bumping in a wall
         if (maze->map[player->y][next_column] == ' ' || maze->map[player->y][next_column] == 'S' || maze->map[player->y][next_column] == 'E')
         {
             player->x = next_column;
